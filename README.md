@@ -6,7 +6,7 @@
 
 ## video配置
 ``` jsx
-editor.config.uploadImgShowBase64 = true // base 64 存储图片
+editor.config.uploadImgShowBase64 = true // base 64  存储图片
 
 editor.config.uploadVideoShowBase64 = false // base 64 存储视频
 editor.config.uploadVideoServer = '/api/upload-video'// 配置服务器端地址
