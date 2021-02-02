@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wangEditor example</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <p>
+        wangEditor demo
+    </p>
+    <div id="div1">
+        <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+        <p>
+            <img src="http://www.wangeditor.com/imgs/logo.jpeg" />
+        </p>
+    </div>
+
+    <script src="../dist/wangEditor.js"></script>
+    <script>
+        // 改为使用var声明，才能在window对象上获取到编辑器实例，方便e2e测试
+        var E = window.wangEditor
+        var editor = new E('#div1')
+
+        editor.config.onchange = function (newHtml) {
+            console.log('onchange', newHtml)
+        }
+        // editor.config.onblur = function (newHtml) {
+        //     console.log('onblur', newHtml)
+        // }
+        // editor.config.onfocus = function (newHtml) {
+        //     console.log('onfocus', newHtml)
+        // }
+        // editor.config.fontNames = [
+        //     '宋体',
+        //     '微软雅黑',
+        // ]
+
+        editor.config.menus = [
+            'head', // 标题
+            'bold', // 粗体
+            'fontSize', // 字号
+            // 'fontName', // 字体
+            'italic', // 斜体
+            'underline', // 下划线
+            'strikeThrough', // 删除线
+            'foreColor', // 文字颜色
+            'backColor', // 背景颜色
+            //   'link', // 插入链接
+            // 'list', // 列表
+            'justify', // 对齐方式
+            //   'quote', // 引用
+            //   'emoticon', // 表情
+            'image', // 插入图片
+            //   'table', // 表格
+            'video', // 插入视频
+            //   'code', // 插入代码
+            'undo', // 撤销
+            'redo', // 重复
+            'fullscreen' // 全屏
+        ]
+
+        editor.config.uploadImgShowBase64 = true // base 64 存储图片
+        editor.config.showLinkImg = false
+        editor.config.uploadVideoShowBase64 = true // base 64 存储视频(不好使!)
+        // editor.config.uploadVideoServer = '/api/upload-video'// 配置服务器端地址
+        editor.config.uploadVideoHeaders = {}// 自定义 header
+        editor.config.uploadVideoName = 'file' // 后端接受上传文件的参数名
+        editor.config.uploadVideoMaxSize = 50 * 1024 * 1024 // 将图片大小限制为 2M
+        editor.config.uploadVideoMaxLength = 1 // 限制一次最多上传 3 张图片
+        editor.config.uploadVideoTimeout = 3 * 60 * 1000 // 设置超时时间
+        editor.config.zIndex = 999 //层级
+
+        this.editor.config.uploadVideoHooks = {
+            fail: (xhr, editor, result) => {
+                // 插入视频失败回调
+            },
+            success: (xhr, editor, result) => {
+                // 视频上传成功回调
+            },
+            timeout: (xhr, editor) => {
+                // 网络超时的回调
+            },
+            error: (xhr, editor) => {
+                // 视频上传错误的回调
+            },
+            customInsert: (insertVideo, result, editor) => {
+                // 视频上传成功，插入视频的回调
+                //result为上传视频成功的时候返回的数据，这里我打印了一下发现后台返回的是data：[{url:"路径的形式"},...]
+                console.log(result.data)
+                //insertVideo()为插入图片的函数
+                //循环插入图片
+                // for (let i = 0; i < 1; i++) {
+                insertVideo(result.data.src)
+                // }
+            }
+        }
+
+        editor.config.showFullScreen = true
+        editor.create()
+    </script>
+</body>
+
+</html>
